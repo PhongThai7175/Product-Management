@@ -33,17 +33,17 @@
                     </div>  
                 </div>
                 <div class="form-group row">
-                    <label for="inputPassword" class="col-sm-3 col-form-label">Status</label>
+                    <label for="inputPassword" class="col-sm-3 col-form-label">Day</label>
                     <div class="col-sm-9">
                         <textarea 
                         class="form-control" 
                         rows="3"
-                        v-model="order.status"
+                        v-model="order.day"
                         @blur="validate" 
-                        v-bind:class="{'is-invalid': order.status}"
+                        v-bind:class="{'is-invalid': order.day}"
                         >
                     </textarea>
-                    <div class="invalid-feedback" v-if="errors.status"> {{ errors.status }}</div>
+                    <div class="invalid-feedback" v-if="errors.day"> {{ errors.day }}</div>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -66,12 +66,12 @@
             errors: {
                 name: '',
                 address: '',
-                status: '',
+                day: '',
             },
             order:{
                 name: '',
                 address: '',
-                status: '',
+                day: '',
             }
         }
      },
@@ -88,7 +88,7 @@
             this.errors = {
                 name: '',
                 address: '',
-                status: '',
+                day: '',
             }
 
             if(!this.order.name) {
@@ -97,14 +97,14 @@
                 isValid = false
             }
 
-            if(!this.order.position) {
-                this.errors.position = 'Status is required'
+            if(!this.order.day) {
+                this.errors.day = 'Day is required'
 
                 isValid = false
             }
 
-            if(!this.order.phone) {
-                this.errors.phone = 'Address is required'
+            if(!this.order.address) {
+                this.errors.address = 'Address is required'
 
                 isValid = false
 
@@ -114,7 +114,7 @@
         save() {
             if (this.validate()) {
                 if (this.order.id) {
-                    this.$request.put(`http://localhost:8000/api/users/${this.order.id}`, this.order).then(res => {
+                    this.$request.put(`http://localhost:4200 ${this.order.id}`, this.order).then(res => {
                         if (res.data.success) {
                             this.$router.push({name: 'todo.list'})
                             return
@@ -125,7 +125,7 @@
 
                     return;
                  }
-                this.$request.post('http://localhost:8000/api/users',this.order).then(res => {
+                this.$request.post('http://localhost:4200',this.order).then(res => {
                     if (res.data.success) {
                         this.$router.push({name: 'todo.list'})
                         return
@@ -137,15 +137,15 @@
         },
 
         getorder(orderId) {
-            this.$request.get(`http://localhost:8000/api/users/${orderId}`).then(res => {
+            this.$request.get(`http://localhost:4200 ${orderId}`).then(res => {
                 this.order = res.data
             })
         }
      },
      cancel() {
         this.order.name = ''
-        this.order.phone = ''
-        this.order.position = ''
+        this.order.address = ''
+        this.order.day = ''
      }
 }
 </script>

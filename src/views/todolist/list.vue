@@ -15,22 +15,22 @@
             <th scope="col" width = "120">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Address</th>
-            <th scope="col">Status</th>
+            <th scope="col">Day</th>
             <th scope="col">Handle</th>
           </tr>
         </thead>
         <tbody>
-          <tr :key = "index" v-for="(user, index) in users">
-            <th scope="row">{{ user.id }}</th>
-            <td>{{ user.name }}</td>
-            <td>{{ user.phone }}</td>
-            <td>{{ user.position }}</td>
+          <tr :key = "index" v-for="(order, index) in orders">
+            <th scope="row">{{ order.id }}</th>
+            <td>{{ order.name }}</td>
+            <td>{{ order.address }}</td>
+            <td>{{ order.day }}</td>
             <td>
-              <router-link :to="{ name: 'user.edit' , params: {id: user.id} }">
+              <router-link :to="{ name: 'todo.edit' , params: {id: order.id} }">
                 <button class="btn btn-primary">Edit</button> 
               </router-link>
               &nbsp;
-              <button class="btn btn-danger" @click="onDelete(user.id)">Delete</button>
+              <button class="btn btn-danger" @click="onDelete(order.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -42,10 +42,10 @@
 
 <script>
 export default {
-  name: 'UserForm',
+  name: 'OrderForm',
    data() {
     return {
-      users: []
+      orders: []
     }
    },
    created() {
@@ -53,11 +53,11 @@ export default {
    },
    methods: {
     getAll() {
-      this.$request.get('http://localhost:8000/api/users').then( res => {
-        this.users = res.data
+      this.$request.get('http://localhost:4200').then( res => {
+        this.orders = res.data
       })
     },
-    onDelete(userId){
+    onDelete(orderId){
       this.$swal.fire({
         title: 'Are you sure?',
         showDenyButton: false,
@@ -65,7 +65,7 @@ export default {
         confirmButtonText: 'Sure',
       }).then((result) => {
         if (result.isConfirmed) {
-          this.$request.delete(`http://localhost:8000/api/users/${userId}`).then( res => {
+          this.$request.delete(`http://localhost:4200 ${orderId}`).then( res => {
             if (res.data.success) {
               this.$swal.fire('Done!', '', 'success')
               this.getAll()
